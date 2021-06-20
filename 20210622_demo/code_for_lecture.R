@@ -31,7 +31,7 @@ income_data %>%
           panel.grid = element_blank()) +
     ggplot2::scale_fill_manual(values = c("happiness" = "darkslateblue", "income" = "darkslategray3")) +
     ggplot2::labs(x = "", y = "Frequency")
-ggsave("data_distribution.png", height = 6, width = 10)
+ggsave("plots/data_distribution.png", height = 6, width = 10)
 
 # linear model
 lm(happiness ~ income, data = income_data)
@@ -53,7 +53,7 @@ income_data %>%
     ggplot2::theme(legend.position = "none",
                    panel.grid = element_blank()) +
     ggplot2::geom_smooth(method = "lm", se = FALSE, formula = y ~ x, color = "red", fill = "red")
-ggplot2::ggsave("happiness_income_plot2.png", height = 6, width = 10)
+ggplot2::ggsave("plots/happiness_income_plot2.png", height = 6, width = 10)
 
 income_data %>%
     ggplot2::ggplot(.) +
@@ -63,7 +63,7 @@ income_data %>%
     ggplot2::theme(legend.position = "none",
           panel.grid = element_blank()) +
     ggplot2::geom_smooth(method = "lm", se = TRUE, formula = y ~ x, color = "red", fill = "red")
-ggplot2::ggsave("happiness_income_plot3.png", height = 6, width = 10)
+ggplot2::ggsave("plots/happiness_income_plot3.png", height = 6, width = 10)
 
 # get more info from the linear model
 summary(lm(happiness ~ income, data = income_data))
@@ -78,9 +78,11 @@ predicted_data %>%
     ggplot2::aes(x = income, y = predicted_happiness) +
     ggplot2::geom_point() +
     ggplot2::theme_bw(20)
-ggplot2::ggsave("happiness_predict.png", height = 6, width = 10)
+ggplot2::ggsave("plots/happiness_predict.png", height = 6, width = 10)
 
 # plot residual data
+residuals2 <- income_data %>%
+    dplyr::mutate(resid = resid(model))
 residuals <- broom::augment(model)
 
 residuals %>%
@@ -89,4 +91,4 @@ residuals %>%
     ggplot2::geom_point() +
     ggplot2::theme_bw(20) +
     labs(y = "residual happiness")
-ggplot2::ggsave("residuals.png", height = 6, width = 10)
+ggplot2::ggsave("plots/residuals.png", height = 6, width = 10)
