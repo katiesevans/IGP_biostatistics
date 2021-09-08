@@ -149,6 +149,9 @@ data.frame(x = c(-3,3)) %>%
     ggplot2::theme_bw(24)
 ggsave("standard_normal4.png", height = 5, width = 10)
 
+# calulate density probability
+pnorm(1.53)
+
 data.frame(x = c(-3,3)) %>%
     ggplot2::ggplot(.) +
     ggplot2::aes(x) +
@@ -168,4 +171,7 @@ data.frame(x = c(-3,3)) %>%
     ggplot2::scale_x_continuous(breaks = c(-3, -2, -1, 0, 1, 2, 3)) +
     ggplot2::theme_bw(24)
 ggsave("standard_normal5.png", height = 5, width = 10)
+
+# calculate density probability
 pnorm(0.86) - pnorm(-1.53)
+
