@@ -143,4 +143,93 @@ ggsave("seed_weights2.png", height = 5, width = 7)
 
 #######
 # Central limit theorem
+# make non-normal distribution
+set.seed(1)
+skewed <- data.frame(val = rbeta(1000, 2, 5))
+skewed %>%
+    data.frame(val = rbeta(1000, 2, 5)) %>%
+    ggplot(.) +
+    aes(x = val) +
+    geom_density(color = "grey50", size = 1.5) +
+    ggplot2::theme_bw(24) +
+    ggplot2::labs(x = "", y = "") +
+    ggplot2::theme(axis.text.y = element_blank(),
+                   axis.title = element_blank(),
+                   axis.ticks.y = element_blank())
+ggsave("skewed_distribution.png", height = 5, width = 7)
+mean(skewed$val)
+sd(skewed$val)
 
+# take samples from skewed distribution
+# sample of 20 values, 3 times
+sample1 <- data.frame(rep = seq(1,3), test = "sample1") %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(sample = paste(sample(skewed$val, 20), collapse = ","))
+
+# sample of 20 values, 10 times
+sample2 <- data.frame(rep = seq(1,10), test = "sample2") %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(sample = paste(sample(skewed$val, 20), collapse = ","))
+
+# sample of 20 values, 20 times
+sample3 <- data.frame(rep = seq(1,20), test = "sample3") %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(sample = paste(sample(skewed$val, 20), collapse = ","))
+
+# sample of 20 values, 50 times
+sample4 <- data.frame(rep = seq(1,50), test = "sample4") %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(sample = paste(sample(skewed$val, 20), collapse = ","))
+
+# sample of 20 values, 100 times
+sample5 <- data.frame(rep = seq(1,100), test = "sample5") %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(sample = paste(sample(skewed$val, 20), collapse = ","))
+
+# sample of 20 values, 1000 times
+sample6 <- data.frame(rep = seq(1,1000), test = "sample6") %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(sample = paste(sample(skewed$val, 20), collapse = ","))
+
+# combine samples and plot distributions
+all_samples <- sample1 %>%
+    dplyr::bind_rows(sample2, sample3, sample4, sample5, sample6) %>%
+    dplyr::mutate(individual = sample) %>%
+    tidyr::separate_rows(individual, convert = TRUE) %>%
+    dplyr::group_by(test, rep, sample) %>%
+    dplyr::summarize(mean = mean(individual),
+                     sd = sd(individual))
+
+all_samples %>%
+    dplyr::mutate(test2 = dplyr::recode(test,
+                                        "sample1" = "n = 3",
+                                        "sample2" = "n = 10",
+                                        "sample3" = "n = 20",
+                                        "sample4" = "n = 50",
+                                        "sample5" = "n = 100",
+                                        "sample6" = "n = 1000")) %>%
+    ggplot2::ggplot(.) +
+    ggplot2::aes(x = mean) +
+    ggplot2::geom_histogram() +
+    ggplot2::facet_wrap(~factor(test2,
+                                levels = c("n = 3", "n = 10", 
+                                           "n = 20", "n = 50", 
+                                           "n = 100", "n = 1000")), scales = "free") +
+    ggplot2::theme_bw(24) +
+    ggplot2::labs(x = "", y = "") +
+    ggplot2::theme(axis.text = element_blank(),
+                   axis.title = element_blank(),
+                   axis.ticks = element_blank())
+ggsave("skewed_distribution_samples.png", height = 7, width = 12)
+
+# total means
+total <- all_samples %>%
+    dplyr::mutate(samples = dplyr::recode(test,
+                                        "sample1" = "n = 3",
+                                        "sample2" = "n = 10",
+                                        "sample3" = "n = 20",
+                                        "sample4" = "n = 50",
+                                        "sample5" = "n = 100",
+                                        "sample6" = "n = 1000")) %>%
+    dplyr::group_by(test, samples) %>%
+    dplyr::summarize(sample_mean = mean(mean))
