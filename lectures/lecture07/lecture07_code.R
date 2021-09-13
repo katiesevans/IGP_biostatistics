@@ -163,3 +163,31 @@ data.frame(x = c(-4,4)) %>%
                    axis.ticks = element_blank())
 ggsave("effect_size2.png", height = 5, width = 7)
 
+
+######### 7.2
+# butterfly - t = 4.23
+data.frame(x = c(25,45)) %>%
+    ggplot2::ggplot(.) +
+    ggplot2::aes(x) +
+    ggplot2::stat_function(fun = dnorm,
+                           n = 100,
+                           geom = "area",
+                           args = list(mean = 32.81, sd = 2.48),
+                           xlim = c(40.4904, 45),
+                           alpha = 0.7,
+                           fill = "steelblue3", size = 1.5) +
+    ggplot2::stat_function(fun = dnorm, 
+                           n = 100, 
+                           args = list(mean = 32.81, sd = 2.48),
+                           color = "grey50", size = 1.5) + 
+    ggplot2::scale_y_continuous(breaks = NULL) +
+    # ggplot2::scale_x_continuous(breaks = c(320,380,440,500,560,620,680)) +
+    ggplot2::theme_bw(24) +
+    ggplot2::theme(axis.title = element_blank(),
+                   axis.text = element_blank(),
+                   axis.ticks = element_blank()) +
+    ggplot2::geom_vline(xintercept = 40.4904, size = 1.5, linetype = 2, color = "blue")
+ggsave("butterfly_t1.png", height = 5, width = 7)
+
+# find p value for t = 4.23
+pt(4.23, 13)
