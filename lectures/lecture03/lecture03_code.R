@@ -70,3 +70,42 @@ test <- data.frame(parasite) %>%
                                          TRUE ~ "5")) %>%
     dplyr::group_by(bin) %>%
     dplyr::summarize(rel = n()/500)
+
+### Expected value
+cells <- data.frame(markers = c(1,2,3,5,8),
+                    percent = c(40,28,19,9,4))
+
+cells %>%
+    ggplot2::ggplot(.) +
+    ggplot2::aes(x = markers, y = percent) +
+    ggplot2::geom_bar(stat = "identity", fill = "grey70", color = "black") +
+    ggplot2::theme_bw(24) +
+    ggplot2::labs(x = "Number of markers", y = "Percent of cells") +
+    ggplot2::geom_vline(xintercept = 2.3, size = 1.5, color = "red", linetype = 2)
+ggsave("expected_value.png", height = 4, width = 7)
+
+df <- data.frame(exp=rnorm(100, 10, 1.5))
+df %>%
+    ggplot2::ggplot(.) +
+    ggplot2::aes(x = exp) +
+    ggplot2::geom_density() +
+    ggplot2::theme_bw(24) +
+    ggplot2::labs(x = "Gene expression", y = "Relative frequency") +
+    ggplot2::geom_vline(aes(xintercept = mean(exp)), size = 1.5, color = "red") +
+    ggplot2::geom_vline(aes(xintercept = mean(exp) + sd(exp)), size = 1.5, color = "blue", linetype = 2) +
+    ggplot2::geom_vline(aes(xintercept = mean(exp) - sd(exp)), size = 1.5, color = "blue", linetype = 2)
+ggsave("gene_exp.png", height = 4, width = 7)
+
+df2 <- data.frame(exp=rnorm(100, 12, 1.5))
+df %>%
+    ggplot2::ggplot(.) +
+    ggplot2::aes(x = exp) +
+    ggplot2::geom_density() +
+    ggplot2::geom_density(data = df2) +
+    ggplot2::theme_bw(24) +
+    ggplot2::labs(x = "Gene expression", y = "Relative frequency") +
+    ggplot2::geom_vline(data = df2, aes(xintercept = mean(exp)), size = 1.5, color = "red") +
+    ggplot2::geom_vline(data = df2, aes(xintercept = mean(exp) + sd(exp)), size = 1.5, color = "blue", linetype = 2) +
+    ggplot2::geom_vline(data = df2, aes(xintercept = mean(exp) - sd(exp)), size = 1.5, color = "blue", linetype = 2)
+ggsave("gene_exp4.png", height = 4, width = 7)
+
