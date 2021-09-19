@@ -232,6 +232,12 @@ What is the probability of choosing an individual whose favorite flavor is not v
 
 # Lecture 03
 
+```{r}
+
+
+
+```
+
 
 # Lecture 04
 
@@ -551,7 +557,7 @@ abs(mean(video_sample) - mean(ice_cream$video))/sd(video_sample)
 
 ## Comparing populations - t test
 
-Split the original population of individuals into males and females. Perform a statistical analysis to determine if males are more likely to score higher on the puzzle than females.
+Split the original population of individuals into males and females. Perform a statistical analysis to determine if males are more likely to score higher on the video than females.
 
 ```{r}
 
@@ -563,9 +569,9 @@ females <- ice_cream %>%
     dplyr::filter(female == 1)
 
 # easy way - we can use t.test!
-t.test(males$puzzle, females$puzzle)
+t.test(males$video, females$video)
 
-print("Our data suggest that there is no difference in puzzle scores between males and females (P = 0.46)")
+print("Our data suggest that there is no difference in puzzle scores between males and females (P = 0.076)")
 
 
 ```
@@ -669,5 +675,82 @@ print("We would need to sample 109 individuals in order to detect a true differe
 
 ```
 
+# Lecture 09
+
+## Nonparametric tests
+
+Split the original population of individuals into males and females. Perform a statistical analysis to determine if males are more likely to score higher on the puzzle than females.
+
+What type of test is most appropriate here and why?
+
+```{r}
+
+print("Because the puzzle data is not normally distributed, it is best to use a nonparametric test to compare two samples like the Wilcoxon-Mann-Whitney U test.")
+
+```
+
+Perform the analysis suggested above. What is the conclusion?
+
+```{r}
+
+# split into two populations, male and female
+males <- ice_cream %>%
+    dplyr::filter(female == 0)
+
+females <- ice_cream %>%
+    dplyr::filter(female == 1)
+
+# easy way - we can use wilcox.test!
+wilcox.test(males$puzzle, females$puzzle)
+
+print("Our data suggest that there is no difference in puzzle scores between males and females (P = 0.57)")
 
 
+```
+
+We expected the puzzle to have an average score of 50. Does our data suggest this is true? Or did the students score higher than 50? 
+
+```{r}
+
+# sign test - manually
+# how many individuals had puzzle score > 50?
+df <- ice_cream %>%
+    dplyr::mutate(more_than_50 = puzzle > 50)
+
+pos <- sum(df$more_than_50)
+neg <- 200-pos
+
+# directional hypothesis: H_A: score > 50
+# binomial distribution: n = 200, p = 0.5
+pbinom(neg, 200, 0.5) ####################################### is this right?
+
+```
+
+Repeat the previous analysis comparing video scores to puzzle scores but this time use the Wilcox signed-rank test since the puzzle data is not normally distributed.
+
+```{r}
+
+wilcox.test(ice_cream$video, ice_cream$puzzle, paired = T)
+
+# our results:
+print("Our data suggests there is not a statistically significant difference between video scores and puzzle scores (p = 0.14).")
+
+```
+
+BONUS: Can you explain why your p-values were so different comparing video and puzzle scores using a parametric vs a nonparametric test?
+
+```{r}
+
+
+```
+
+## BONUS: Randomization
+
+
+
+```{r}
+
+
+```
+
+## MORE HERE ON SIGN TEST ETC
