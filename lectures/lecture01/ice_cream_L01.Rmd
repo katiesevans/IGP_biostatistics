@@ -21,7 +21,7 @@ library(DT)
 
 ```{r}
 
-ice_cream <- read.csv("~/Downloads/Ice_cream_R.csv")
+ice_cream <- read.csv("https://raw.githubusercontent.com/katiesevans/IGP_biostatistics/main/data/ice_cream.csv")
 
 DT::datatable(ice_cream)
 
