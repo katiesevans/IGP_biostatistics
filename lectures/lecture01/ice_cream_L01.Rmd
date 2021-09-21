@@ -1,0 +1,181 @@
+---
+title: "ice_cream_L01"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+library(tidyverse)
+library(DT)
+
+```
+
+# Read in the data
+
+* id: Identity of student
+* female: Gender (0: male, 1: female)
+* ice_cream: Favorite flavor (0: vanilla, 1: chocolate, 2: strawberry)
+* video: score on video game
+* puzzle: score on puzzle
+
+```{r}
+
+ice_cream <- read.csv("~/Downloads/Ice_cream_R.csv")
+
+DT::datatable(ice_cream)
+
+```
+
+# Lecture 01
+
+## What type of variables are in our dataframe?
+
+* id: numeric/discrete
+* female: numeric/discrete
+* ice_cream: numeric/discrete
+* video: numeric/continuous
+* puzzle: numeric/continuous
+
+## What is the shape, center, and spread of the four variables?
+
+### Female
+
+```{r}
+
+table(ice_cream$female)
+
+ice_cream %>%
+    dplyr::mutate(female = dplyr::recode(female, "0" = "Male", "1" = "Female")) %>%
+    ggplot2::ggplot(.) +
+    ggplot2::aes(x = female, fill = female) +
+    ggplot2::geom_bar(color = "black") +
+    ggplot2::theme_bw(24) +
+    ggplot2::scale_fill_manual(values = c("Female" = "pink", "Male" = "skyblue"),
+                               name = "Gender") +
+    ggplot2::labs(x = "Gender", y = "Count") +
+    ggplot2::theme(legend.position = 'none')
+
+```
+
+### Ice cream flavor
+
+```{r}
+
+table(ice_cream$ice_cream)
+
+ice_cream %>%
+    dplyr::mutate(ice_cream = dplyr::recode(ice_cream, "1" = "Vanilla", 
+                                            "2" = "Chocolate",
+                                            "3" = "Strawberry")) %>%
+    ggplot2::ggplot(.) +
+    ggplot2::aes(x = ice_cream, fill = ice_cream) +
+    ggplot2::geom_bar(color = "black") +
+    ggplot2::theme_bw(24) +
+    ggplot2::scale_fill_manual(values = c("Vanilla" = "grey100", "Chocolate" = "chocolate4",
+                                          "Strawberry" = "maroon3"),
+                               name = "Gender") +
+    ggplot2::labs(x = "Ice cream flavor", y = "Count") +
+    ggplot2::theme(legend.position = 'none')
+
+```
+
+### Video score
+
+```{r}
+
+# note we can use summary here instead of table because it is a continuous variable (not discrete)
+summary(ice_cream$video)
+
+# histogram
+ice_cream %>%
+    ggplot2::ggplot(.) +
+    ggplot2::aes(x = video) +
+    ggplot2::geom_histogram(bins = 20, fill = "chartreuse4") +
+    ggplot2::theme_bw(24) +
+    ggplot2::labs(x = "Video score", y = "Count")
+
+# measures of spread
+var(ice_cream$video)
+sd(ice_cream$video)
+
+# histogram with mean and sd plotted on top
+ice_cream %>%
+    ggplot2::ggplot(.) +
+    ggplot2::aes(x = video) +
+    ggplot2::geom_histogram(bins = 20, fill = "chartreuse4") +
+    ggplot2::theme_bw(24) +
+    ggplot2::labs(x = "Video score", y = "Count") +
+    ggplot2::geom_vline(xintercept = mean(ice_cream$video), color = "blue", size = 2) +
+    ggplot2::geom_vline(xintercept = c(mean(ice_cream$video) + sd(ice_cream$video),
+                                       mean(ice_cream$video) - sd(ice_cream$video)), color = "black", size = 1.5, linetype = 2)
+
+# box plot
+ice_cream %>%
+    ggplot2::ggplot(.) +
+    ggplot2::aes(x = "1", y = video) +
+    ggplot2::geom_jitter(width = 0.2) +
+    ggplot2::geom_boxplot(alpha = 0.5) +
+    ggplot2::theme_bw(24) +
+    ggplot2::labs(x = "", y = "Video score") +
+    ggplot2::theme(legend.position = 'none',
+                   axis.text.x = element_blank(),
+                   axis.title.x = element_blank(),
+                   axis.ticks.x = element_blank())
+
+
+```
+
+### Puzzle score
+
+```{r}
+
+# note we can use summary here instead of table because it is a continuous variable (not discrete)
+summary(ice_cream$puzzle)
+
+# histogram
+ice_cream %>%
+    ggplot2::ggplot(.) +
+    ggplot2::aes(x = puzzle) +
+    ggplot2::geom_histogram(bins = 20, fill = "aquamarine4") +
+    ggplot2::theme_bw(24) +
+    ggplot2::labs(x = "Puzzle score", y = "Count")
+
+# redo histogram with less bins!
+ice_cream %>%
+    ggplot2::ggplot(.) +
+    ggplot2::aes(x = puzzle) +
+    ggplot2::geom_histogram(bins = 10, fill = "aquamarine4") +
+    ggplot2::theme_bw(24) +
+    ggplot2::labs(x = "Puzzle score", y = "Count")
+
+# measures of spread
+var(ice_cream$puzzle)
+sd(ice_cream$puzzle)
+
+# histogram with mean and sd plotted on top
+ice_cream %>%
+    ggplot2::ggplot(.) +
+    ggplot2::aes(x = puzzle) +
+    ggplot2::geom_histogram(bins = 10, fill = "aquamarine4") +
+    ggplot2::theme_bw(24) +
+    ggplot2::labs(x = "Video score", y = "Count") +
+    ggplot2::geom_vline(xintercept = mean(ice_cream$puzzle), color = "blue", size = 2) +
+    ggplot2::geom_vline(xintercept = c(mean(ice_cream$puzzle) + sd(ice_cream$puzzle),
+                                       mean(ice_cream$puzzle) - sd(ice_cream$puzzle)), color = "black", size = 1.5, linetype = 2)
+
+# box plot
+ice_cream %>%
+    ggplot2::ggplot(.) +
+    ggplot2::aes(x = "1", y = puzzle) +
+    ggplot2::geom_jitter(width = 0.2) +
+    ggplot2::geom_boxplot(alpha = 0.5) +
+    ggplot2::theme_bw(24) +
+    ggplot2::labs(x = "", y = "Puzzle score") +
+    ggplot2::theme(legend.position = 'none',
+                   axis.text.x = element_blank(),
+                   axis.title.x = element_blank(),
+                   axis.ticks.x = element_blank())
+
+
+```
