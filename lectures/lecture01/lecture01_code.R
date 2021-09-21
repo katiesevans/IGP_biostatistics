@@ -2,10 +2,13 @@
 library(tidyverse)
 
 # set working directory
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+setwd(glue::glue("{dirname(rstudioapi::getActiveDocumentContext()$path)}/figures"))
+
+set.seed(4)
+random <- data.frame(x = seq(1:20), y = rnorm(20, mean = 30, sd = 2)) 
 
 # showing random variation
-data.frame(x = seq(1:20), y = rnorm(20, mean = 30, sd = 2)) %>%
+random %>%
     ggplot2::ggplot(.) +
     ggplot2::aes(x = x, y = y) +
     ggplot2::geom_bar(stat = "identity", fill = "grey70", color = "grey10") +
@@ -13,6 +16,19 @@ data.frame(x = seq(1:20), y = rnorm(20, mean = 30, sd = 2)) %>%
     ggplot2::labs(x = "Replicate", y = "Result") +
     ggplot2::geom_hline(yintercept = 30, color = "red", linetype = 2, size = 1.5)
 ggsave("random_variation.png", height = 4, width = 7)
+
+random %>%
+    dplyr::bind_rows(data.frame(x = 21, y = 36)) %>%
+    dplyr::mutate(col = ifelse(x < 21, "ns", "sig")) %>%
+    ggplot2::ggplot(.) +
+    ggplot2::aes(x = x, y = y, fill = col) +
+    ggplot2::scale_fill_manual(values = c("ns" = "grey70", "sig" = "dodgerblue")) +
+    ggplot2::geom_bar(stat = "identity", color = "grey10") +
+    ggplot2::theme_bw(24) +
+    ggplot2::theme(legend.position = "none")+
+    ggplot2::labs(x = "Replicate", y = "Result") +
+    ggplot2::geom_hline(yintercept = 30, color = "red", linetype = 2, size = 1.5)
+ggsave("random_variation2.png", height = 4, width = 7)
 
 ## Visualizing frequency distributions
 
