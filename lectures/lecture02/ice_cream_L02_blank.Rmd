@@ -1,0 +1,68 @@
+---
+title: "ice_cream_example"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+library(tidyverse)
+library(DT)
+```
+
+# Read in the data
+
+* id: Identity of student
+* female: Gender (0: male, 1: female)
+* ice_cream: Favorite flavor (0: vanilla, 1: chocolate, 2: strawberry)
+* video: score on video game
+* puzzle: score on puzzle
+
+```{r}
+
+ice_cream <- read.csv("https://raw.githubusercontent.com/katiesevans/IGP_biostatistics/main/data/ice_cream.csv")
+
+# nice package/function to view pretty dataframe in R markdown
+DT::datatable(ice_cream)
+
+```
+
+# Lecture 02
+
+## Probability
+
+What is the probability of choosing an individual whose favorite flavor is not vanilla?
+
+```{r}
+
+# 3 ways to solve this problem...
+
+
+
+```
+
+What is the probability that a student chosen at random is male?
+
+```{r}
+
+ 
+
+
+
+```
+
+What is the probability of selecting an individual that is both male and enjoys chocolate?
+
+* disjoint or non-disjoint?
+* independent or dependent?
+* AND or OR?
+
+```{r}
+
+
+
+
+
+
+
+```

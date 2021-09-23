@@ -1,0 +1,99 @@
+---
+title: "ice_cream_example"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+library(tidyverse)
+library(DT)
+```
+
+# Read in the data
+
+* id: Identity of student
+* female: Gender (0: male, 1: female)
+* ice_cream: Favorite flavor (0: vanilla, 1: chocolate, 2: strawberry)
+* video: score on video game
+* puzzle: score on puzzle
+
+```{r}
+
+ice_cream <- read.csv("https://raw.githubusercontent.com/katiesevans/IGP_biostatistics/main/data/ice_cream.csv")
+
+# nice package/function to view pretty dataframe in R markdown
+DT::datatable(ice_cream)
+
+```
+
+# Lecture 02
+
+## Probability
+
+What is the probability of choosing an individual whose favorite flavor is not vanilla?
+
+```{r}
+
+table(ice_cream$ice_cream)
+
+# option 1: prob of not vanilla = 1 - pr(vanilla)!
+1-(95/200)
+
+# option 2: prob of not vanilla = pr(choc) + pr(straw)
+(47/200) + (58/200)
+
+# or freq(choc + straw) / total
+(47+58)/200
+
+```
+
+What is the probability that a student chosen at random is male?
+
+```{r}
+
+# prob = relative frequency
+table(ice_cream$female)
+
+# pr(male) = # males / # students
+91/200
+
+```
+
+What is the probability of selecting an individual that is both male and enjoys chocolate?
+
+* disjoint or **non-disjoint**?
+* **independent** or dependent? - as far as we know?
+* **AND** or OR?
+
+```{r}
+
+# non-disjoint. (not mutually exclusive)
+# as far as we know, they are independent but they might not be...
+# and (multiply)
+
+# pr(choc + male) = pr(choc) * pr(male | choc)
+# pr(male | choc) = pr(male) if these events are independent.
+
+# chocolate is 2 - 47/200 people like chocolate
+table(ice_cream$ice_cream)
+
+# pr(choc + male) = pr(choc) * pr(male) 
+(47/200)*(91/200)
+
+# look it up in the table... how many male choc lovers do we have? is this independent?
+ice_cream %>%
+    dplyr::mutate(ice_cream = dplyr::recode(ice_cream, "1" = "Vanilla", 
+                                        "2" = "Chocolate",
+                                        "3" = "Strawberry")) %>%
+    dplyr::mutate(female = dplyr::recode(female, "0" = "Male", "1" = "Female")) %>%
+    dplyr::group_by(ice_cream, female) %>%
+    dplyr::summarize(n = n()) %>%
+    DT::datatable()
+
+#15 male chocolate lovers out of 47 total chocolate lovers
+15/47
+
+# not independent!!! pr(male) != pr(male | choc) --> we will discuss this more next time :)
+
+```
