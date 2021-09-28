@@ -42,6 +42,8 @@
 - "q" functions (i.e. `qbinom()`) returns the value of the quantile (or z score) that gives you the given area under the curve. You can think of "q" and "p" functions as being inverses
     - `qbinom(0.879, 10, 0.37)` returns the value (5) where the area under the curve is 0.879. Note, the answer to `pbinom(5,10,0.37)` is 0.879.
 
+*More explanation and examples can be found [here](https://www.statology.org/dbinom-pbinom-qbinom-rbinom-in-r/)*
+
 
 ## Outside links:
 * [Statistical Analysis with R For Dummies Cheat Sheet](https://www.dummies.com/programming/r/statistical-analysis-with-r-for-dummies-cheat-sheet/)
