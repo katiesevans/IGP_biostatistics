@@ -1,0 +1,147 @@
+---
+title: "ice_cream_example"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+library(tidyverse)
+library(DT)
+```
+
+# Read in the data
+
+* id: Identity of student
+* female: Gender (0: male, 1: female)
+* ice_cream: Favorite flavor (0: vanilla, 1: chocolate, 2: strawberry)
+* video: score on video game
+* puzzle: score on puzzle
+
+```{r}
+
+ice_cream <- read.csv("https://raw.githubusercontent.com/katiesevans/IGP_biostatistics/main/data/ice_cream.csv")
+
+DT::datatable(ice_cream)
+
+```
+
+# Lecture 03
+
+## Conditional probability
+
+Using Bayes' theorem, find the probability that a randomly chosen individual is female given that their favorite flavor is 1) vanilla, 2) chocolate, or 3) strawberry
+
+### Vanilla
+```{r}
+
+# bayes theorem
+# P(A|B) = P(B|A)P(A)/P(B)
+
+# get a table
+table(ice_cream$ice_cream, ice_cream$female)
+
+# vanilla:
+# P(female | vanilla) = P(vanilla | female)P(female)/P(vanilla)
+p_ab <- 48/(48+32+29)
+p_a <- (48+32+29)/200
+p_b <- (47+48)/200
+
+p_ab*p_a/p_b
+
+# check this with the table: p(female | vanilla)
+48/(48+47)
+
+```
+
+### Chocolate
+```{r}
+
+# bayes theorem
+# P(A|B) = P(B|A)P(A)/P(B)
+
+# get a table
+table(ice_cream$ice_cream, ice_cream$female)
+
+# chocolate:
+# P(female | choc) = P(choc | female)P(female)/P(choc)
+p_ab <- 32/(48+32+29)
+p_a <- (48+32+29)/200
+p_b <- (15+32)/200
+
+p_ab*p_a/p_b
+
+# check this with the table: p(female | choc)
+32/(32+15)
+
+```
+
+### Strawberry
+```{r}
+
+# bayes theorem
+# P(A|B) = P(B|A)P(A)/P(B)
+
+# get a table
+table(ice_cream$ice_cream, ice_cream$female)
+
+# strawberry:
+# P(female | strawberry) = P(strawberry | female)P(female)/P(strawberry)
+p_ab <- 29/(48+32+29)
+p_a <- (48+32+29)/200
+p_b <- (29+29)/200
+
+p_ab*p_a/p_b
+
+# check this with the table: p(female | strawberry)
+29/(29+29)
+
+```
+
+## Random variables
+
+What is the mean difference in video scores between males and females?
+
+1. Find mean (and sd) for each population
+
+```{r}
+
+female <- ice_cream %>%
+    dplyr::filter(female == 1)
+
+male <- ice_cream %>%
+    dplyr::filter(female == 0)
+
+female_mean <- mean(female$video)
+female_sd <- sd(female$video)
+
+male_mean <- mean(male$video)
+male_sd <- sd(male$video)
+
+```
+
+2. Find the difference in means
+
+```{r}
+
+# D = mu_1 - mu_2
+
+female_mean - male_mean
+
+```
+
+3. Find the standard deviation of the difference in means between male and female video scores
+
+```{r}
+
+# first find difference in variance
+# VAR = var_x + var_y
+# VAR = sd_x^2 + sd_y^2
+
+var_diff <- female_sd**2 + male_sd**2
+
+# sd = sqrt(var)
+sd_diff <- sqrt(var_diff)
+sd_diff
+
+```

@@ -1,0 +1,140 @@
+---
+title: "ice_cream_example"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+library(tidyverse)
+library(DT)
+```
+
+# Read in the data
+
+* id: Identity of student
+* female: Gender (0: male, 1: female)
+* ice_cream: Favorite flavor (0: vanilla, 1: chocolate, 2: strawberry)
+* video: score on video game
+* puzzle: score on puzzle
+
+```{r}
+
+ice_cream <- read.csv("https://raw.githubusercontent.com/katiesevans/IGP_biostatistics/main/data/ice_cream.csv")
+
+DT::datatable(ice_cream)
+
+```
+
+# Lecture 03
+
+## Conditional probability
+
+Using Bayes' theorem, find the probability that a randomly chosen individual is female given that their favorite flavor is 1) vanilla, 2) chocolate, or 3) strawberry
+
+### Vanilla
+```{r}
+
+# bayes theorem
+
+
+# get a table
+
+
+# vanilla:
+
+
+
+# check this with the table: p(female | vanilla)
+
+```
+
+### Chocolate
+```{r}
+
+# bayes theorem
+
+
+# get a table
+
+
+
+# chocolate:
+
+
+
+
+# check this with the table: p(female | choc)
+
+
+```
+
+### Strawberry
+```{r}
+
+# bayes theorem
+
+
+# get a table
+
+
+# strawberry:
+
+
+
+
+# check this with the table: p(female | strawberry)
+
+
+```
+
+## Random variables
+
+What is the mean difference in video scores between males and females?
+
+1. Find mean (and sd) for each population
+
+```{r}
+
+# filter only female data
+
+
+
+# filter only male data
+
+
+
+# find female mean and sd
+
+
+
+# find male mean and sd
+
+
+
+```
+
+2. Find the difference in means
+
+```{r}
+
+
+
+
+```
+
+3. Find the standard deviation of the difference in means between male and female video scores
+
+```{r}
+
+# first find difference in variance
+
+
+
+
+
+# now find sd
+
+
+
+```
