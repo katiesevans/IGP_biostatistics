@@ -8,6 +8,8 @@
     - `sd(c(1,2,3,4,5))`
 - `summary(x)`: calculate six number summary statistics of a vector `x` (min, q1, median, mean, q3, max)
     - `summary(c(1,2,3,4,5))`
+- `table(x)`: counts the number of unique values of x
+    - `table(ice_cream$ice_cream)` returns the number of students that like each of the three flavors of ice cream
 - `sum(x)`: calculate sum of vector `x`
     - `sum(c(1,2,3,4,5))`
 - `prod(x)`: calculate product of vector `x`
@@ -29,29 +31,16 @@
     - Can use `prob` as a vector of probabilities for each element of `x`: `sample(c("H", "T"), 10, replace = T, prob = c(0.6, 0.4))`
 
 ## Generating a distribution
-**Binomial distribution**
-- `dbinom(x, size, prob)`: generates a binomial distribution of `size` from vector `x` with `prob` probability of success for each trial
-    - `dbinom(seq(1,10), 10, 0.37)`
 
-**Normal distribution**
-- `rnorm(n, mean = 0, sd = 1)`: generates a normal distribution of size `n` with given `mean` and `sd`
-    - `rnorm(20)`
-    - `rnorm(100, mean = 3, sd = 2.5)`
-- `dnorm(x, mean = 0, sd = 1)`: gives the density of a normal distribution of values `x`
-    - *example*
-- `pnorm(q, mean = 0, sd = 1)`: calculates the distribution function of a normal distribution with given `mean` and `sd` and returns the area under the curve at z value `q`
-    - `pnorm(1.96)`
-
-**Skewed distribution**
-- `rbeta()`
-
-## Hypothesis testing
-**Calculate the t statistic**
-- `qt(prob, df)`: calculates the Student's t statistic given the area under the curve `prob` and the degrees of freedom `df`
-    - `qt(0.975, 13)`
-**t test**
-- `t.test(x)`: performs a one or two sample Student's t-test on vectors of data
-    - *examples*
+**A note on distribution functions**
+- "r" functions (i.e. `rbinom()`) generate a vector of random variables following said distribution type
+    - `rnorm(100)` would generate a vector of size 100 containing values drawn from a normal distribution with default mean = 0 and sd = 1
+- "d" functions (i.e. `dbinom()`) returns the value of the probability density function of said distribution
+    - `dbinom(5, 10, 0.37)` returns a single value: the probability of getting exactly 5 out of 10 successes when the probability of each success is 0.37
+- "p" functions (i.e. `pbinom()`) returns the value of the cumulative density function of said distribution
+    - `pbinom(5, 10, 0.37)` returns a single value: the probability of getting five OR LESS successes when the probability of each success is 0.37. This could be thought of as the **area under the curve** and is commonly used to answer questions with a normal distribution
+- "q" functions (i.e. `qbinom()`) returns the value of the quantile (or z score) that gives you the given area under the curve. You can think of "q" and "p" functions as being inverses
+    - `qbinom(0.879, 10, 0.37)` returns the value (5) where the area under the curve is 0.879. Note, the answer to `pbinom(5,10,0.37)` is 0.879.
 
 
 ## Outside links:
