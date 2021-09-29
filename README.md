@@ -25,5 +25,9 @@ Looking for help with basic data wrangling in R? New to the "Tidyverse"? Check o
 * Additionally, check out the `swirl` course `Getting and Cleaning Data` for more Tidyverse intro
 
 ## Questions?
-For all questions, contact Katie at kathryn.evans@northwestern.edu
+For all questions, contact Katie at kathryn.evans@northwestern.edu (or on the biostats-484 slack)
+
+## General R links for more help
+* swirl ([here](https://swirlstats.com/))
+* Data types and structures ([here](https://swcarpentry.github.io/r-novice-inflammation/13-supp-data-structures/))
 
