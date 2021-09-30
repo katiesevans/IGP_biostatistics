@@ -90,6 +90,9 @@ dbinom(2, 5, 109/200) + dbinom(3, 5, 109/200) + dbinom(4, 5, 109/200) + dbinom(5
 # alternatively, probability of NOT getting 1 or 0
 1-(dbinom(1, 5, 109/200)+ dbinom(0, 5, 109/200))
 
+# using pbinom
+1 - pbinom(1,5,109/200)
+
 ```
 
 ## Normal distribution
