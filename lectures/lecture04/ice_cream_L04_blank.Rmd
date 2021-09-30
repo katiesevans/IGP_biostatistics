@@ -1,0 +1,128 @@
+---
+title: "ice_cream_example"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+library(tidyverse)
+library(DT)
+```
+
+# Read in the data
+
+* id: Identity of student
+* female: Gender (0: male, 1: female)
+* ice_cream: Favorite flavor (0: vanilla, 1: chocolate, 2: strawberry)
+* video: score on video game
+* puzzle: score on puzzle
+
+```{r}
+
+ice_cream <- read.csv("https://raw.githubusercontent.com/katiesevans/IGP_biostatistics/main/data/ice_cream.csv")
+
+DT::datatable(ice_cream)
+
+```
+
+# Lecture 04
+
+## Binomial random distributions
+
+Which of the variables in our dataset could be classified as 'binomial'?
+
+* binary
+* independent
+* fixed n
+* same p
+
+```{r}
+
+
+
+```
+
+If you randomly chose 5 individuals , what is the probability that that all five would be female?
+
+```{r}
+
+# calculate manually
+
+
+
+
+
+# using dbinom
+
+
+
+```
+
+If you randomly chose 5 individuals , what is the probability that that only two would be female?
+
+```{r}
+
+# using dbinom(x, size, prob)
+
+
+
+# using equation
+
+
+
+
+
+```
+
+If you randomly chose 5 individuals , what is the probability that that **at least two** would be female?
+
+```{r}
+
+
+
+
+
+
+
+```
+
+## Normal distribution
+
+Let's approximate the video scores as a normal distribution with a mean of `r mean(ice_cream$video)` and standard deviation `r sd(ice_cream$video)`. What is the probability that an individual scored lower than 60?
+
+What is the probability that an individual scores between 40 and 57?
+
+What is the probability than an individual scores over 50?
+
+```{r}
+
+# we can use pnorm with our mean and sd!
+
+
+
+# pr(57) - pr(40) to get the range between values
+
+
+
+
+# probability of scoring greater than 50 = 1-pr(50)
+
+
+
+```
+
+What is the 85th percentile of the video score data?
+
+```{r}
+
+# we have a probability, we need a quantile.
+
+
+
+# check with pnorm
+
+
+
+```
+
