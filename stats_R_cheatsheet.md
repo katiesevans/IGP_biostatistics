@@ -34,7 +34,7 @@
 
 **A note on distribution functions**
 - "r" functions (i.e. `rbinom()`) generate a vector of random variables following said distribution type
-    - `rnorm(100)` would generate a vector of size 100 containing values drawn from a normal distribution with default mean = 0 and sd = 1
+    - `rbinom(10, size = 1, prob = 0.5)` would simulate 10 coin flips with 1 being heads and 0 being tails
 - "d" functions (i.e. `dbinom()`) returns the value of the probability density function of said distribution
     - `dbinom(5, 10, 0.37)` returns a single value: the probability of getting exactly 5 out of 10 successes when the probability of each success is 0.37
 - "p" functions (i.e. `pbinom()`) returns the value of the cumulative density function of said distribution
