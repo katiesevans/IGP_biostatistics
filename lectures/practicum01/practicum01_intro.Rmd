@@ -1,0 +1,253 @@
+---
+title: "In Class Practicum - Intro to R"
+subtitle: "October 5, 2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Demo: Introduction to R
+
+## R syntax
+
+There are some important basic syntax things to learn in R:
+
+* **Comments** R will ignore everything on a line that follows a `#`:
+```{r}
+# this is a comment
+1 + 2 + 3 # this is also a comment
+```
+
+* **Assignment** We can assign values to variables using `<-`:
+```{r}
+# set x to 98.6
+x <- 98.6
+```
+
+*Note that x appears in the environment panel!*
+
+We can also ask R what it is, by typing `x`:
+```{r}
+x
+```
+
+It is always good practice to give your variables meaningful names
+```{r}
+bodyTemp <- 98.6
+
+# side note: you can also assign variables with `x=98.6` but it is better practice to use `<-`
+# there is a shortcut for this symbol: Mac (Option + -), Windows (Alt + -)
+
+```
+
+* **Arithmetic** R has usual arithmetic operations (`+` `-` `*` `/` `^`)
+```{r}
+# convert body temp from F to C
+(5/9)*(bodyTemp-32)
+
+# we can also assign this to another variable
+bodyTempC <- (5/9)*(bodyTemp-32)
+bodyTempC
+
+```
+
+It can also do things like square roots, logs, etc.
+```{r}
+# square root of 4
+sqrt(4)
+
+# the natural log of 1
+log(1)
+
+# e^2.5
+exp(2.5)
+```
+
+* **Comparison** R can compare things:
+```{r}
+# == means 'is equal too?'
+3 + 2 == 5 # should be true
+
+2 + 2 == 5 # should be false
+
+# > and >= are 'greater than' and 'greater than or equal to'
+5 > 3
+
+# and < and <= are 'less than' and 'less than or equal to'
+3 < 3 + 2
+
+```
+
+**Getting help!** R has a help function, called `help()`, which will pull up the manual page for the function. You give as an argument the thing you want help with:
+```{r}
+help(sqrt)
+
+# you can also use ?
+?sqrt
+
+```
+
+The help panel in R studio also has a search panel. Try pulling up the help page for the log function. 
+
+* The **usage** line tells you the syntax of the function. Sometimes multiple functions are documented on the same help page. Let’s focus on the first on on the log page, the one with the usage line `log(x, base = exp(1))`
+* This tells us that we can feed the `log()` function two arguments: `x` and `base`. It’s also telling us that the base argument has a default value, namely the natural base `e = e1`, or `exp(1)`. This means that if we don’t specify the base, it will assume we want a natural log.
+* Further down in the help page you can read about the arguments and the return values for the function
+* Arguments can be passed by name or passed by position
+
+So, for example:
+```{r}
+log(x=4) # natural log of 4
+
+log(4) # also natural log of 4
+
+log(x=4,base=2) # log base 2 of 4
+
+log(4,2) # same -- it assumes that x is first and base is second, just like the help says
+
+log(base=2,x=4) # notice!  order doesn't matter if you tell it which argument is which!
+
+```
+
+## Data structures in R
+
+Data in R can exist in one of several **types** or **storage modes**, including:
+
+* **numeric** - holds numeric values
+* **character** - holds string values (i.e. "x" or "hello world")
+* **logical** - holds Boolean TRUE or FALSE values (can also be shown as 1 or 0, respectively)
+* **factor** and **ordered** - hold *categorical* data
+* **NA** - denotes a missing value
+
+You can find out what type of value something is with the `is.` functions:
+```{r}
+x <- 5
+
+is.logical(x)
+
+is.character(x)
+
+is.na(x)
+
+is.numeric(x)
+
+# mode will tell you the storage mode of a value
+mode(x)
+
+# str (structure) displays the internal structure of an object (also helpful for more complex objects like dataframes or lists)
+str(x)
+
+```
+
+Changing from one type to another is called coercion. You can coerce values with the “as.” functions:
+
+```{r}
+y <- as.character(x)
+
+y # quotes will indicate that it's a character string
+
+# can't add a string to a character!
+# uncomment to try to run this line
+# y + 2 
+
+# let's try coercing it back:
+as.numeric(y) + 2
+
+```
+
+Note that not all strings are coercible!
+```{r}
+ # now y is the LETTER 'x'
+y<-"x"
+
+# note that it's the LETTER, not the variable x!
+y == x 
+
+# can't coerce the letter x to a number
+# as.numeric(y) 
+
+```
+
+And finally, a few examples of boolean logic:
+```{r}
+
+# & means 'logical and'
+# something cannot be true and false, so returns false
+TRUE & FALSE
+
+# | means 'logical or'
+# everything is either true or false...
+TRUE | FALSE
+
+# remember, TRUE also = 1 and FALSE = 0, we can add TRUE and FALSE
+TRUE + TRUE
+
+```
+
+These **atomic variables** can be organized into **data structures**:
+
+* **vector** - a vector of values all having the same mode
+* **matrix** - a 2-dimensional array of values having the same mode
+* **list** - like a vector, but the elements can be of different types (they can even be vectors or lists themselves)
+* **data.frame** - a specialized structure for tables of values (you can think of this as a list of vectors all with the same length, or as a special sort of matrix where the columns can be different types)
+
+## Vectors in R
+As mentioned above, vectors are a sequence of elements all having the same type, such as (1, 2, 3, 4) or (“hello”,“world”). NA’s, which are a special type for missing data, may also be mixed in.
+
+### Creating vectors
+We can **concatenate** vectors with `c()`:
+
+```{r}
+# c() concatenates its arguments into a vector, eg:
+x <- c(1,2,4,8)
+x
+
+# note that x is both numeric (the storage mode) AND a vector!
+is.numeric(x)
+is.vector(x)
+
+# note also that a single value is still a vector -- a vector of length 1:
+is.vector(5.5)
+
+# "a:b" can be used as a shorthand for "from a to b in steps of 1"
+y <- 10:20
+y
+
+# you can concatenate two vectors, eg:
+c(x,y) 
+
+# R will COERCE values if you have mixed types in a vector:
+x <- c(1,2,3,"hello","world")
+x # note that the first three elements are CHARACTERS, not numeric!
+
+```
+
+
+### Operating on vectors
+Most (but not all) functions in R operate elementwise, meaning they apply to all elements of a vector. For example,
+
+```{r}
+y  # just to remind ourselves 
+
+1+y
+
+5*y
+
+y^2
+
+sqrt(y)
+
+```
+
+Some functions operate on the complete vector, eg:
+```{r}
+# find the sum of vector y
+sum(y)
+
+# find the mean of y
+mean(y)
+
+```
+
+
