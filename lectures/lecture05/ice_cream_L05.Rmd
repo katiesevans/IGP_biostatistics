@@ -126,3 +126,26 @@ If you take any given sample of 20 individuals' video scores, what is the probab
 1-pnorm(58, mean = mean(ice_cream$video), sd = sd(ice_cream$video)/sqrt(20))
 
 ```
+
+# Bonus: Plot a QQ plot and test the normality of the video scores and the puzzle scores.
+
+```{r}
+
+# plot qq plot for video
+qqnorm(ice_cream$video)
+qqline(ice_cream$video)
+
+# shapiro-wilks test for non normality
+shapiro.test(ice_cream$video)
+# p < 0.05 - moderate evidence of non-normality
+
+# plot qq plot for puzzle
+qqnorm(ice_cream$puzzle)
+qqline(ice_cream$puzzle)
+
+# shapiro-wilks test for non normality
+shapiro.test(ice_cream$puzzle)
+# p < 0.001 - very strong evidence of non-normality
+
+
+```

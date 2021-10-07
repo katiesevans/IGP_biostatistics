@@ -36,7 +36,8 @@ Take a random sample of 5 individuals' video scores and calculate the sample mea
 ```{r}
 
 # take a sample
-video_sample <- sample(ice_cream$video, size = 5)
+
+
 
 # mean of population = 52.405 = mean sample
 
@@ -121,3 +122,30 @@ If you take any given sample of 20 individuals' video scores, what is the probab
 
 
 ```
+
+# Bonus: Plot a QQ plot and test the normality of the video scores and the puzzle scores.
+
+```{r}
+
+# plot qq plot for video
+
+
+
+
+# shapiro-wilks test for non normality
+
+
+
+
+# plot qq plot for puzzle
+
+
+
+
+# shapiro-wilks test for non normality
+
+
+
+
+```
+
