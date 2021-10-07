@@ -1,0 +1,123 @@
+---
+title: "ice_cream_example"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+library(tidyverse)
+library(DT)
+```
+
+# Read in the data
+
+* id: Identity of student
+* female: Gender (0: male, 1: female)
+* ice_cream: Favorite flavor (0: vanilla, 1: chocolate, 2: strawberry)
+* video: score on video game
+* puzzle: score on puzzle
+
+```{r}
+
+ice_cream <- read.csv("https://raw.githubusercontent.com/katiesevans/IGP_biostatistics/main/data/ice_cream.csv")
+
+DT::datatable(ice_cream)
+
+```
+
+
+# Lecture 05
+
+## Sampling distribution
+
+Take a random sample of 5 individuals' video scores and calculate the sample mean and standard deviation. Does it match to your expectations?
+
+```{r}
+
+# take a sample
+video_sample <- sample(ice_cream$video, size = 5)
+
+# mean of population = 52.405 = mean sample
+
+
+# sd of population = 10.7 = sd of sample
+
+
+```
+
+Now, take 100 samples each of 5 individuals video scores. Calculate the mean and standard deviation of the sampling distribution. Does it match your expectations?
+
+```{r}
+# create a variable to hold all the sample means
+
+# take 10 samples, let "sam" be the variable for sample 1 or 2 or 3 etc.
+# try a for loop!?
+
+
+
+# look at means
+
+
+# what is the mean of means?
+
+
+# mean of population = 52.405 = mean sample
+
+# what is the sd of means?
+
+
+# sd of population = 10.7, sd of sample = sd/sqrt(n)
+
+
+
+# plot the distribution of means?
+
+
+
+
+```
+
+Now try with 100 samples of 20 individuals video scores!
+
+```{r}
+# create a variable to hold all the sample means
+
+
+# take 10 samples, let "sam" be the variable for sample 1 or 2 or 3 etc.
+
+
+
+
+
+# look at means
+
+
+# what is the mean of means?
+
+
+# mean of population = 52.405 = mean sample
+
+# what is the sd of means?
+
+
+# sd of population = 10.7, sd of sample = sd/sqrt(n)
+
+
+# plot the distribution of means?
+
+
+# tighter distribution! Take care - the x axis is different scale so it looks less normal but its actually not! try to plot on same axes
+
+```
+
+
+If you take any given sample of 20 individuals' video scores, what is the probability that the average video score will be greater than 58?
+
+```{r}
+
+# use pnorm!
+
+
+
+```

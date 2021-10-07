@@ -123,8 +123,12 @@ df <- data.frame(rep = seq(1:1000)) %>%
     tidyr::separate_rows(individual, sep = ",", convert = TRUE) %>%
     dplyr::mutate(prob = ifelse(individual == 0, 45/50, 5/50)) %>%
     dplyr::group_by(rep, sample) %>%
-    dplyr::summarize(probability = prod(prob),
-                     relative_freq = mean(individual))
+    dplyr::summarize(total = sum(individual),
+                     probability = prod(prob),
+                     relative_freq = mean(individual)) %>%
+    dplyr::ungroup() %>%
+    dplyr::select(total, relative_freq, probability) %>%
+    dplyr::distinct()
 
 # check out the distribution
 # mean = 0.094! population mean = 0.1 :) 
@@ -247,7 +251,7 @@ ggsave("seed_weights2.png", height = 5, width = 7)
 #######
 # Central limit theorem
 # make non-normal distribution
-set.seed(50)
+set.seed(51)
 val <- rchisq(100, 3)
 mean(val)
 sd(val)
@@ -264,36 +268,36 @@ ggsave("new_skewed_distribution.png", height = 5, width = 7)
 
 
 # take samples from skewed distribution
-# sample of 20 values, 3 times
+# sample of 3 values, 200 times
 set.seed(1)
-sample1 <- data.frame(rep = seq(1,3), test = "sample1") %>%
+sample1 <- data.frame(rep = seq(1,200), test = "sample1") %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(sample = paste(sample(val, 3), collapse = ","))
+
+# sample of 5 values, 200 times
+sample2 <- data.frame(rep = seq(1,200), test = "sample2") %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(sample = paste(sample(val, 5), collapse = ","))
+
+# sample of 10 values, 200 times
+sample3 <- data.frame(rep = seq(1,200), test = "sample3") %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(sample = paste(sample(val, 10), collapse = ","))
+
+# sample of 15 values, 200 times
+sample4 <- data.frame(rep = seq(1,200), test = "sample4") %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(sample = paste(sample(val, 15), collapse = ","))
+
+# sample of 20 values, 200 times
+sample5 <- data.frame(rep = seq(1,200), test = "sample5") %>%
     dplyr::rowwise() %>%
     dplyr::mutate(sample = paste(sample(val, 20), collapse = ","))
 
-# sample of 20 values, 10 times
-sample2 <- data.frame(rep = seq(1,10), test = "sample2") %>%
+# sample of 50 values, 200 times
+sample6 <- data.frame(rep = seq(1,200), test = "sample6") %>%
     dplyr::rowwise() %>%
-    dplyr::mutate(sample = paste(sample(val, 20), collapse = ","))
-
-# sample of 20 values, 20 times
-sample3 <- data.frame(rep = seq(1,20), test = "sample3") %>%
-    dplyr::rowwise() %>%
-    dplyr::mutate(sample = paste(sample(val, 20), collapse = ","))
-
-# sample of 20 values, 50 times
-sample4 <- data.frame(rep = seq(1,50), test = "sample4") %>%
-    dplyr::rowwise() %>%
-    dplyr::mutate(sample = paste(sample(val, 20), collapse = ","))
-
-# sample of 20 values, 100 times
-sample5 <- data.frame(rep = seq(1,100), test = "sample5") %>%
-    dplyr::rowwise() %>%
-    dplyr::mutate(sample = paste(sample(val, 20), collapse = ","))
-
-# sample of 20 values, 1000 times
-sample6 <- data.frame(rep = seq(1,1000), test = "sample6") %>%
-    dplyr::rowwise() %>%
-    dplyr::mutate(sample = paste(sample(val, 20), collapse = ","))
+    dplyr::mutate(sample = paste(sample(val, 50), collapse = ","))
 
 # combine samples and plot distributions
 all_samples <- sample1 %>%
@@ -307,20 +311,21 @@ all_samples <- sample1 %>%
 all_samples %>%
     dplyr::mutate(test2 = dplyr::recode(test,
                                         "sample1" = "n = 3",
-                                        "sample2" = "n = 10",
-                                        "sample3" = "n = 20",
-                                        "sample4" = "n = 50",
-                                        "sample5" = "n = 100",
-                                        "sample6" = "n = 1000")) %>%
+                                        "sample2" = "n = 5",
+                                        "sample3" = "n = 10",
+                                        "sample4" = "n = 15",
+                                        "sample5" = "n = 20",
+                                        "sample6" = "n = 50")) %>%
     ggplot2::ggplot(.) +
     ggplot2::aes(x = mean) +
     ggplot2::geom_histogram(binwidth = 0.3, fill = "cornflowerblue", color = "black") +
     # ggplot2::geom_histogram(binwidth = function(x) 2 * IQR(x) / (length(x)^(1/3))) +
     ggplot2::facet_wrap(~factor(test2,
-                                levels = c("n = 3", "n = 10", 
-                                           "n = 20", "n = 50", 
-                                           "n = 100", "n = 1000")), scales = "free") +
+                                levels = c("n = 3", "n = 5", 
+                                           "n = 10", "n = 15", 
+                                           "n = 20", "n = 50")), scales = "free") +
     ggplot2::theme_bw(24) +
+    ggplot2::xlim(0,8) +
     ggplot2::labs(x = "", y = "") +
     ggplot2::theme(axis.text = element_blank(),
                    axis.title = element_blank(),
@@ -330,33 +335,34 @@ ggsave("skewed_distribution_samples2.png", height = 7, width = 12)
 
 # total means
 total <- all_samples %>%
-    dplyr::mutate(samples = dplyr::recode(test,
+    dplyr::mutate(sample_n = dplyr::recode(test,
                                         "sample1" = "n = 3",
-                                        "sample2" = "n = 10",
-                                        "sample3" = "n = 20",
-                                        "sample4" = "n = 50",
-                                        "sample5" = "n = 100",
-                                        "sample6" = "n = 1000")) %>%
-    dplyr::group_by(test, samples) %>%
-    dplyr::summarize(sample_mean = mean(mean))
+                                        "sample2" = "n = 5",
+                                        "sample3" = "n = 10",
+                                        "sample4" = "n = 15",
+                                        "sample5" = "n = 20",
+                                        "sample6" = "n = 50")) %>%
+    dplyr::group_by(test, sample_n) %>%
+    dplyr::summarize(sample_mean = mean(mean),
+                     sample_sd = sd(mean))
 
 # calculate QQ plots for each of the samples?
 all_samples %>%
     dplyr::mutate(test2 = dplyr::recode(test,
                                         "sample1" = "n = 3",
-                                        "sample2" = "n = 10",
-                                        "sample3" = "n = 20",
-                                        "sample4" = "n = 50",
-                                        "sample5" = "n = 100",
-                                        "sample6" = "n = 1000")) %>%
+                                        "sample2" = "n = 5",
+                                        "sample3" = "n = 10",
+                                        "sample4" = "n = 15",
+                                        "sample5" = "n = 20",
+                                        "sample6" = "n = 50")) %>%
     ggplot2::ggplot(.) +
     ggplot2::aes(sample = mean) +
     ggplot2::stat_qq() +
     ggplot2::stat_qq_line() +
     ggplot2::facet_wrap(~factor(test2,
-                                levels = c("n = 3", "n = 10", 
-                                           "n = 20", "n = 50", 
-                                           "n = 100", "n = 1000")), scales = "free") +
+                                levels = c("n = 3", "n = 5", 
+                                           "n = 10", "n = 15", 
+                                           "n = 20", "n = 50")), scales = "free") +
     ggplot2::theme_bw(24) +
     ggplot2::labs(x = "", y = "") +
     ggplot2::theme(axis.text = element_blank(),
