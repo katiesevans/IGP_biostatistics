@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 # R stats cheatsheet
 
 ## Summary statistics and general math
