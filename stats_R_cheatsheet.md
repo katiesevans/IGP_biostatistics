@@ -1,8 +1,3 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
 # R stats cheatsheet
 
 ## Summary statistics and general math
@@ -35,7 +30,7 @@ output:
     - `sample(seq(1,10,1), 3, replace = T)`
     - Can use `prob` as a vector of probabilities for each element of `x`: `sample(c("H", "T"), 10, replace = T, prob = c(0.6, 0.4))`
 
-## Generating a distribution
+## Distributions
 
 **A note on distribution functions**
 - "r" functions (i.e. `rbinom()`) generate a vector of random variables following said distribution type
@@ -47,7 +42,40 @@ output:
 - "q" functions (i.e. `qbinom()`) returns the value of the quantile (or z score) that gives you the given area under the curve. You can think of "q" and "p" functions as being inverses
     - `qbinom(0.879, 10, 0.37)` returns the value (5) where the area under the curve is 0.879. Note, the answer to `pbinom(5,10,0.37)` is 0.879.
 
+**Note: many of these functions have an optional argument `lower.tail = TRUE/FALSE` meant to calculate the area under the curve to the left (TRUE) or right (FALSE) of your value**
+
 *More explanation and examples can be found [here](https://www.statology.org/dbinom-pbinom-qbinom-rbinom-in-r/)*
+
+### Binomial distributions
+> `*binom`
+- `rbinom(n, size, prob)` - generate random variable
+- `dbinom(x, size, prob)` - calculate the probability of seeing a specific value
+- `pbinom(q, size, prob)` - calculate the cumulative probability of seeing at most a specific value (inverse of `qbinom()`)
+- `qbinom(p, size, prob)` - calculate the specific value given a probability of at most that value (inverse of `pbinom()`)
+
+### Normal distributions
+> `*norm`
+- `rnorm(n, mean = 0, sd = 1)` - generate random variable
+- `dnorm(x, mean = 0, sd = 1)` (rarely used)
+- `pnorm(q, mean = 0, sd = 1)` - calculate the probability (p-value) of a given quantile (z score) (inverse of `qnorm()`)
+- `qnorm(p, mean = 0, sd = 1)` - calculate the quantile (z score) of a given probability (p-value) (inverse of `pnorm()`)
+
+*Q-Q plots*
+```
+# generate random normal data
+data <- rnorm(100)
+# plot Q-Q plot and line
+qqnorm(data)
+qqline(data)
+```
+
+
+### Student's *t* distribution
+> `*t`
+- `rt(n, df)` - generate random variable
+- `dt(x, df)` (rarely used)
+- `pt(q, df)` - calculate the probability (p-value) of a given quantile (or t statistic) (inverse of `qt()`)
+- `qt(p, df)` - calculate the quantile (t statistic) of a given probability (p-value) (inverse of `pt()`)
 
 
 ## Outside links:
