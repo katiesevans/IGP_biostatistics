@@ -2,12 +2,10 @@
 
 This repository contains all the course materials for IGP-484 (2021). You can find both the lecture slides and the code to generate all plots and statistical analyses in the designated date folder. All analyses are performed in R and require previous installation of `tidyverse`. If you don't have `tidyverse`, you can install the package with `install.packages("tidyverse")` or you can install the specific packages required for this class: `install.packages(c("dplyr", "tidyr", "ggplot2"))`.
 
-# Pre-course survey: [here](https://forms.gle/7ZixtLMfWHugFqqP9)
-
 # Syllabus
 [Link to the syllabus](https://katiesevans9.notion.site/Quantitative-Biology-Statistics-and-Data-Analysis-for-Life-Scientists-IGP-484-b45c148f9aa94b1783abf668ae401478)
 
-## Not familiar with R? Follow these steps (before Oct. 5)
+## Not familiar with R? Follow these steps
 
 1. Download R [here](https://www.r-project.org/)
 2. Download RStudio [here](https://www.rstudio.com/products/rstudio/download/)
@@ -30,4 +28,7 @@ For all questions, contact Katie at kathryn.evans@northwestern.edu (or on the bi
 ## General R links for more help
 * swirl ([here](https://swirlstats.com/))
 * Data types and structures ([here](https://swcarpentry.github.io/r-novice-inflammation/13-supp-data-structures/))
+
+## More Stats help
+* Great YouTube channel - has videos for probably every topic (and more!): [here](https://www.youtube.com/channel/UCtYLUTtgS3k1Fg4y5tAhLbw)
 
