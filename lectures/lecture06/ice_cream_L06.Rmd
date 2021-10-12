@@ -1,0 +1,109 @@
+---
+title: "ice_cream_example"
+output: html_document
+---
+
+
+#### NOTES
+# do we need several samples to do this analysis? not just one sample... FIX
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+library(tidyverse)
+library(DT)
+```
+
+# Read in the data
+
+* id: Identity of student
+* female: Gender (0: male, 1: female)
+* ice_cream: Favorite flavor (0: vanilla, 1: chocolate, 2: strawberry)
+* video: score on video game
+* puzzle: score on puzzle
+
+```{r}
+
+ice_cream <- read.csv("https://raw.githubusercontent.com/katiesevans/IGP_biostatistics/main/data/ice_cream.csv")
+
+DT::datatable(ice_cream)
+
+```
+
+# Lecture 06
+
+## Standard error of the mean
+
+Calculate the standard error of the mean of an estimate of video score taken from 10 individuals. What does the standard error mean in words?
+
+```{r}
+set.seed(100)
+# standard error = sd/sqrt(n)
+video_sample <- sample(ice_cream$video, size = 10)
+
+sd(video_sample)/sqrt(10)
+
+print("The standard error of the mean is a measure of precision of the mean estimate from the sample.")
+
+```
+
+## Confidence interval
+
+Is it reasonable to calculate confidence intervals for this data? Why or why not?
+
+```{r}
+
+print("The video data is approximately normally distributed and samples are random, independent, and taken from a much larger population. Therefore yes, it is appropriate to calculate the confidence interval.")
+
+```
+
+For your samples calculated above, calculate the confidence interval surrounding the estimation of the mean.
+
+```{r}
+
+# confidence interval (95%) = sample_mean +/- t_0.025 (sample_SE)
+
+# first we need to find t_0.025, what are our degress of freedom?
+# df = n - 1
+df = 9
+
+# can use the qt(p, df) function to find the test statistic
+# p = 0.975 (1 - 0.025)
+t <- qt(0.975, df)
+
+# st error from previous question
+se <- sd(video_sample)/sqrt(10)
+
+# plug in!
+mean(video_sample) - t*se
+mean(video_sample) + t*se
+
+# state conclusion:
+print("We are 95% confident that the true mean in video scores lies between 45.78 and 62.61")
+
+print(glue::glue("The actual mean of the video scores is: {mean(ice_cream$video)}, which is within our 95% confidence interval."))
+
+```
+
+# BONUS: Write a function to calculate the confidence interval above
+
+```{r}
+
+mean.conf.int <- function(x, CI = 0.95) {
+    # define variables first
+    xbar <- mean(x)
+    n <- length(x)
+    t.quantile <- qt(1-(1-CI)/2, df = n-1)
+    std.error <- sd(x)/sqrt(n)
+    
+    # calculate interval now: xbar +/- t*std.error
+    conf.int <- c(xbar-t.quantile*std.error, xbar+t.quantile*std.error)
+    
+    # return conf.int variable
+    return(conf.int)
+}
+
+# try out your function!
+mean.conf.int(video_sample)
+
+```

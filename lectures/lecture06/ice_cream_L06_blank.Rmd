@@ -1,0 +1,94 @@
+---
+title: "ice_cream_example"
+output: html_document
+---
+
+
+#### NOTES
+# do we need several samples to do this analysis? not just one sample... FIX
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+library(tidyverse)
+library(DT)
+```
+
+# Read in the data
+
+* id: Identity of student
+* female: Gender (0: male, 1: female)
+* ice_cream: Favorite flavor (0: vanilla, 1: chocolate, 2: strawberry)
+* video: score on video game
+* puzzle: score on puzzle
+
+```{r}
+
+ice_cream <- read.csv("https://raw.githubusercontent.com/katiesevans/IGP_biostatistics/main/data/ice_cream.csv")
+
+DT::datatable(ice_cream)
+
+```
+
+# Lecture 06
+
+## Standard error of the mean
+
+Calculate the standard error of the mean of an estimate of video score taken from 10 individuals. What does the standard error mean in words?
+
+```{r}
+
+
+
+
+
+```
+
+## Confidence interval
+
+Is it reasonable to calculate confidence intervals for this data? Why or why not?
+
+```{r}
+
+
+
+```
+
+For your samples calculated above, calculate the confidence interval surrounding the estimation of the mean.
+
+```{r}
+
+
+
+
+
+
+
+
+
+
+
+```
+
+# BONUS: Write a function to calculate the confidence interval above
+
+```{r}
+
+mean.conf.int <- function(x, CI = 0.95) {
+    # define variables first
+    
+    
+    
+    
+    # calculate interval now: xbar +/- t*std.error
+
+        
+    # return conf.int variable
+
+}
+
+# try out your function!
+
+
+```
+
