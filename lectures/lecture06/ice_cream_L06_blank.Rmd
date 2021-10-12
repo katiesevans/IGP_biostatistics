@@ -4,9 +4,6 @@ output: html_document
 ---
 
 
-#### NOTES
-# do we need several samples to do this analysis? not just one sample... FIX
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
