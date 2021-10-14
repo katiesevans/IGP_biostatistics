@@ -1,0 +1,122 @@
+---
+title: "ice_cream_example"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+library(tidyverse)
+library(DT)
+```
+
+# Read in the data
+
+* id: Identity of student
+* female: Gender (0: male, 1: female)
+* ice_cream: Favorite flavor (0: vanilla, 1: chocolate, 2: strawberry)
+* video: score on video game
+* puzzle: score on puzzle
+
+```{r}
+
+ice_cream <- read.csv("https://raw.githubusercontent.com/katiesevans/IGP_biostatistics/main/data/ice_cream.csv")
+
+DT::datatable(ice_cream)
+
+```
+
+# Lecture 07
+
+## Hypothesis testing
+
+If we expect the sample mean to be equal to the population mean, what would be the null and alternative hypotheses in such an analysis?
+
+```{r}
+
+# create sample and se from last time
+video_sample <- sample(ice_cream$video, 10)
+se <- sd(video_sample)/sqrt(10)
+
+print("H_0: Sample mean of video scores is equal to the population mean.")
+print("H_A: Sample mean of video scores is NOT equal to the population mean.")
+
+```
+
+Find the test statistic, t, to choose between these two hypotheses above
+
+```{r}
+
+# test statistic t = (sample_mean - population mean) / (standard error of sample)
+t <- (mean(video_sample) - mean(ice_cream$video)) / se
+t
+
+```
+
+Given your sample, do you reject or fail to reject the null hypothesis?
+
+```{r}
+
+# we can use pt(t, df) to find the area under the curve at our test statistic, t
+pt(t, 9, lower.tail = F)
+
+# we need to multiply by 2 because this is a two-tailed test, we are looking for the area under the curve on BOTH sides of our t statistic
+2*pt(t, 9, lower.tail = F)
+
+# thats good! If there was a difference I might be worried... ;)
+print("At a significance level alpha = 0.05, we fail to reject the null hypothesis (P-value = 0.072). Our data suggests there is no statistically signficant difference between the sample and population mean.")
+
+# lets also try the t.test() in R!
+t.test(video_sample, mu = mean(ice_cream$video))
+
+# yay! it matches our math!
+
+```
+
+## Write a function for a one-sided t test
+
+```{r}
+
+one.sided.t.test <- function(x, mu = 0, lower.tail = TRUE) {
+    # define variables first
+    xbar <- mean(x)
+    n <- length(x)
+    std.error <- sd(x)/sqrt(n)
+
+    t.statistic <- (xbar - mu)/std.error
+    
+    # calculate interval now: xbar +/- t*std.error
+    p.value <- pt(t.statistic, df = n - 1, lower.tail = lower.tail)
+    
+    # return conf.int variable
+    return(p.value)
+}
+
+# try out your function!
+one.sided.t.test(video_sample, mu = mean(ice_cream$video), lower.tail = F)
+
+
+```
+
+## Type I and Type II Errors
+
+Let's say your analysis leads you to reject the null hypothesis, but in reality the sample mean is equal to the population mean. What type of error have you made and how could you decrease the probability of this type of error?
+
+```{r}
+
+print("Since we rejected the null hypothesis when we should have accepted it, this is an example of a TYPE I ERROR. We can decrease the probability of a TYPE I ERROR by decreasing the alpha significance level from 0.05 to 0.01, for example.")
+
+```
+
+## Effect size 
+
+Calculate the statistical effect size of the difference between the population and sample means. 
+
+```{r}
+
+# effect size = diff in means / sd
+abs(mean(video_sample) - mean(ice_cream$video))/sd(video_sample)
+
+# this is a medium difference... They differ by 0.65 SD
+
+```
