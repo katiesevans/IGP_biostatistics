@@ -1,0 +1,116 @@
+---
+title: "ice_cream_example"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+library(tidyverse)
+library(DT)
+```
+
+# Read in the data
+
+* id: Identity of student
+* female: Gender (0: male, 1: female)
+* ice_cream: Favorite flavor (0: vanilla, 1: chocolate, 2: strawberry)
+* video: score on video game
+* puzzle: score on puzzle
+
+```{r}
+
+ice_cream <- read.csv("https://raw.githubusercontent.com/katiesevans/IGP_biostatistics/main/data/ice_cream.csv")
+
+DT::datatable(ice_cream)
+
+```
+
+# Lecture 08
+
+## Comparing populations - t test
+
+Split the original population of individuals into males and females. Perform a statistical analysis to determine if males are more likely to score higher on the video than females.
+
+```{r}
+
+# split into two populations, male and female
+males <- ice_cream %>%
+    dplyr::filter(female == 0)
+
+females <- ice_cream %>%
+    dplyr::filter(female == 1)
+
+# easy way - we can use t.test!
+t.test(males$video, females$video)
+
+print("Our data suggest that there is no difference in puzzle scores between males and females (P = 0.076)")
+
+
+```
+
+## Paired sample designs
+
+Let's say we wanted to perform a statistical analysis to decide if the video game scores are statistically different from the puzzle scores. Would it be more appropriate to use an unpaired or paired-sample analysis? Why?
+
+```{r}
+
+print("It might be more appropriate to use a paired sample design in this case, if it was set up in this way, because we gathered puzzle and video data on EACH sample. Using a unpaired analysis could result in a higher standard variation and break the assumption that each observation is independent.")
+
+```
+
+Perform the analysis detailed above. What is the result?
+
+```{r}
+
+# lets calculate ourself first and then test with t.test
+# first - calculate diff between video and puzzle scores
+diff <- ice_cream %>%
+    dplyr::mutate(diff = puzzle - video)
+
+# now we calculate the mean and sd
+mean_diff <- mean(diff$diff)
+sd_diff <- sd(diff$diff)
+
+# calculate the SE
+# se = sd / sqrt(n) - n = 200, not 400!
+se_diff <- sd_diff/sqrt(200)
+
+# calculate confidence interval of mean estimate
+# 95% CI = mean +/- t_0.025(SE)
+
+# find t
+# use qt(p, df)
+t <- qt(0.975, 200-1)
+
+mean_diff - t*se_diff
+mean_diff + t*se_diff
+
+# calculate test statistic t_s
+# t_s = diff - 0 / SE
+t_s <- mean_diff/se_diff
+
+# calculate the p-value (area under the curve) at our test statistic - times by 2
+# we want the area to the right of the t_s and to the left of -t_s, sometimes helpful to draw a quick sketch
+2*(1-pt(t_s, 199))
+
+# we can use t.test to verify we did it right... and we did! woo!
+t.test(ice_cream$puzzle, ice_cream$video, paired = T)
+
+# our results:
+print("Our data suggests there is not a statistically significant difference between video scores and puzzle scores (p = 0.46).")
+
+```
+
+## BONUS
+
+Repeat the analysis above but with the other type of analysis (i.e. if you chose an unpaired test, repeat with a paired test). What do you notice that is different between the two?
+
+```{r}
+
+# lets try with t.test to save time...
+t.test(ice_cream$puzzle, ice_cream$video, paired = F)
+
+print("p-value is higher, df is higher, and confidence interval is wider. there is more variation and less precision in the estimate.")
+
+```
