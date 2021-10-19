@@ -69,7 +69,6 @@ qqnorm(data)
 qqline(data)
 ```
 
-
 ### Student's *t* distribution
 > `*t`
 - `rt(n, df)` - generate random variable
@@ -77,6 +76,26 @@ qqline(data)
 - `pt(q, df)` - calculate the probability (p-value) of a given quantile (or t statistic) (inverse of `qt()`)
 - `qt(p, df)` - calculate the quantile (t statistic) of a given probability (p-value) (inverse of `pt()`)
 
+## Hypothesis testing
+> Parametric
+- `t.test(x, mu)` - One sample *t*-test
+- `t.test(x, y)` - Two (independent) sample *t*-test
+- `t.test(x, y, paired = T)` - Paired (dependent) sample *t*-test
+
+> Non-parametric
+- `wilcox.test(x)` - One sample Mann-Whitney (or Wilcoxon Rank Sum) test
+- `wilcox.test(x, y)` - Two (independent) sample Mann-Whitney (or Wilcoxon Rank Sum) test
+- `wilcox.test(x, y, paired = T)` - Paired (dependent) sample test (*aka Wilcoxon signed-rank*)
+
+**Note: most hypothesis tests have the optional argument `alternative = c("two.sided", "less", "greater")` for one-sided or two-sided tests**
+
+> Choosing a test
+
+![](data/flowchart.png)
+
+## Misc.
+- `shapiro.test(x)` - test of non-normality. (*P > 0.1 = normal distribution*)
+- `power.t.test(n, delta, sd, sig.level, power)` - perform power test (*provide 4/5 parameters and get the 5th*)
 
 ## Outside links:
 * [Statistical Analysis with R For Dummies Cheat Sheet](https://www.dummies.com/programming/r/statistical-analysis-with-r-for-dummies-cheat-sheet/)
