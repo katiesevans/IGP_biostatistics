@@ -1,0 +1,149 @@
+---
+title: "ice_cream_example"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+library(tidyverse)
+library(DT)
+```
+
+# Read in the data
+
+* id: Identity of student
+* female: Gender (0: male, 1: female)
+* ice_cream: Favorite flavor (0: vanilla, 1: chocolate, 2: strawberry)
+* video: score on video game
+* puzzle: score on puzzle
+
+```{r}
+
+ice_cream <- read.csv("https://raw.githubusercontent.com/katiesevans/IGP_biostatistics/main/data/ice_cream.csv")
+
+DT::datatable(ice_cream)
+
+```
+
+# Lecture 09
+
+## Nonparametric tests
+
+Split the original population of individuals into males and females. Perform a statistical analysis to determine if males are more likely to score higher on the puzzle than females.
+
+What type of test is most appropriate here and why?
+
+```{r}
+
+hist(ice_cream$puzzle)
+
+print("Because the puzzle data is not normally distributed, it is best to use a nonparametric test to compare two samples like the Wilcoxon-Mann-Whitney U test.")
+
+```
+
+Perform the analysis suggested above. What is the conclusion?
+
+```{r}
+
+# split into two populations, male and female
+males <- ice_cream %>%
+    dplyr::filter(female == 0)
+
+females <- ice_cream %>%
+    dplyr::filter(female == 1)
+
+# easy way - we can use wilcox.test for independent samples!
+wilcox.test(males$puzzle, females$puzzle)
+
+print("Our data suggest that there is no difference in puzzle scores between males and females (P = 0.57)")
+
+
+```
+
+Does our data support the hypothesis that students scored the same on the puzzle and the video game?
+
+What is the null and alternative hypothesis?
+
+```{r}
+
+print("H0: The students scored the same on the puzzle and the video (i.e. puzzle - video = 0)")
+print("HA: The students did not score the same on the puzzle and the video (i.e. puzzle - video != 0)")
+
+```
+
+First, use the sign test to get a rough estimate.
+
+```{r}
+
+# sign test - manually
+# what is the difference in puzzle and video scores?
+diff <- ice_cream$puzzle - ice_cream$video
+
+# how many positive values?
+pos <- sum(diff > 0)
+
+# how many negative values?
+neg <- sum(diff < 0)
+
+# NOTE! cant just do 200 - pos... why?
+n <- length(diff[diff != 0])
+
+# binomial distribution: choose smaller of pos/neg values
+# n = 191, p = 0.5
+pbinom(neg, n, 0.5)
+
+print("With a p-value of 0.557, we fail to reject the null hypothesis and conclude that students did not score differently on the puzzle and video scores")
+
+```
+
+
+Now, repeat the same test with the Wilcoxon signed-rank test. Since this test uses both rank and sign, it will likely give us a more appropriate estimate of the p-value.
+
+```{r}
+
+# repeat with wilcox test - paired samples (video and puzzle)
+wilcox.test(ice_cream$puzzle, ice_cream$video, paired = T)
+
+print("Although the p-value (0.1418) is still greater than our significance level of 0.05 (and thus we still fail to reject the null hypothesis) we can see how different the sign test and the rank sum test are!")
+
+```
+
+Why is it that the sign test and the signed-rank test produce such different results? To investigate this, let's look at the data.
+
+```{r}
+
+# the sign test only uses + and - but the signed rank test also adds in rank - using the
+# absolute value of the difference...
+
+# lets look at "diff"
+sort(diff)
+hist(diff)
+
+print("We can see that the distribution of diff is skewed to the left. we have larger negative values than we have positive values, and this is the difference between the tests. If we had seen a normal distribution here, we likely would have seen a more similar p-value between the two tests!")
+
+```
+
+## Bonus: Randomization
+
+We talked about boot-strapping confidence intervals in lecture today and we wrote some code to do that... but what if we want to turn that into a function so we can change the confidence level or the data? Try to turn this code into a function:
+
+```{r}
+# generate random variable x
+x <- rnorm(100)
+
+# create variable to hold permutation means
+perm_means <- c()
+# do 10,000 permutations
+for(i in 1:10000) {
+    # sample from x with replacement (perm is same size as x)
+    perm <- sample(x, replace = T)
+    # calcualte mean and add to perm_means
+    perm_means <- c(perm_means, mean(perm))
+}
+
+# get the middle 95% of the mean of the perms distribution
+quantile(perm_means, c(0.025, 0.975))
+
+```
+
