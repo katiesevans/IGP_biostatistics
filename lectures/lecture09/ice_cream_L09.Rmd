@@ -93,7 +93,7 @@ n <- length(diff[diff != 0])
 # n = 191, p = 0.5
 pbinom(neg, n, 0.5)
 
-print("With a p-value of 0.557, we fail to reject the null hypothesis and conclude that students did not score differently on the puzzle and video scores")
+print("With a p-value of 0.123, we fail to reject the null hypothesis and conclude that students did not score differently on the puzzle and video scores")
 
 ```
 
@@ -105,24 +105,10 @@ Now, repeat the same test with the Wilcoxon signed-rank test. Since this test us
 # repeat with wilcox test - paired samples (video and puzzle)
 wilcox.test(ice_cream$puzzle, ice_cream$video, paired = T)
 
-print("Although the p-value (0.1418) is still greater than our significance level of 0.05 (and thus we still fail to reject the null hypothesis) we can see how different the sign test and the rank sum test are!")
+print("In this example, the sign test and the signed-rank test provide very similar results!")
 
 ```
 
-Why is it that the sign test and the signed-rank test produce such different results? To investigate this, let's look at the data.
-
-```{r}
-
-# the sign test only uses + and - but the signed rank test also adds in rank - using the
-# absolute value of the difference...
-
-# lets look at "diff"
-sort(diff)
-hist(diff)
-
-print("We can see that the distribution of diff is skewed to the left. we have larger negative values than we have positive values, and this is the difference between the tests. If we had seen a normal distribution here, we likely would have seen a more similar p-value between the two tests!")
-
-```
 
 ## Bonus: Randomization
 
