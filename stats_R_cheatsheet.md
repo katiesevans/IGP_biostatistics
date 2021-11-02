@@ -76,6 +76,13 @@ qqline(data)
 - `pt(q, df)` - calculate the probability (p-value) of a given quantile (or t statistic) (inverse of `qt()`)
 - `qt(p, df)` - calculate the quantile (t statistic) of a given probability (p-value) (inverse of `pt()`)
 
+### Hypergeometric distribution
+> `*hyper`
+- `rhyper(nn, m, n, k)` - generate random variable (not often used)
+- `dhyper(x, m, n, k)` - calculate the probability of seeing a specific value
+- `phyper(q, m, n, k)` - calculate the cumulative probability (p-value) of a given value (inverse of `qhyper()`)
+- `qhyper(p, m, n, k)` - calculate the value/quantile of a given probability (p-value) (inverse of `phyper()`) (not often used)
+
 ## Hypothesis testing
 > Parametric
 - `t.test(x, mu)` - One sample *t*-test
@@ -86,6 +93,7 @@ qqline(data)
 - `wilcox.test(x)` - One sample Mann-Whitney (or Wilcoxon Rank Sum) test
 - `wilcox.test(x, y)` - Two (independent) sample Mann-Whitney (or Wilcoxon Rank Sum) test
 - `wilcox.test(x, y, paired = T)` - Paired (dependent) sample test (*aka Wilcoxon signed-rank*)
+- `fisher.test(x, alternative = "greater")` - Fisher's exact test. Use `alternative = greater` to test one-sided for enrichment. Can also use a non-directional alternative. `x` is a 2x2 contingency table
 
 **Note: most hypothesis tests have the optional argument `alternative = c("two.sided", "less", "greater")` for one-sided or two-sided tests**
 
@@ -96,6 +104,7 @@ qqline(data)
 ## Misc.
 - `shapiro.test(x)` - test of non-normality. (*P > 0.1 = normal distribution*)
 - `power.t.test(n, delta, sd, sig.level, power)` - perform power test (*provide 4/5 parameters and get the 5th*)
+- `p.adjust(p, method)` - adjust p-values for multiple testing. Several differnt methods available including `fdr` and `bonferroni`
 
 ## Outside links:
 * [Statistical Analysis with R For Dummies Cheat Sheet](https://www.dummies.com/programming/r/statistical-analysis-with-r-for-dummies-cheat-sheet/)
