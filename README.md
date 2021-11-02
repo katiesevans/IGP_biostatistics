@@ -31,5 +31,6 @@ For all questions, contact Katie at kathryn.evans@northwestern.edu (or on the bi
 
 ## More Stats help
 * Great YouTube channel - has videos for probably every topic (and more!): [here](https://www.youtube.com/channel/UCtYLUTtgS3k1Fg4y5tAhLbw)
+* Brief but thorough overview on statistics: [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3096219/)
 * Choosing the right statistical test: [here](https://www.scribbr.com/statistics/statistical-tests/)
 
