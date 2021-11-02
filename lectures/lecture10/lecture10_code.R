@@ -140,3 +140,8 @@ table(fdr$distribution, fdr$sig)
 vals <- sort(c(0.084,0.036,0.063,0.186,0.108,0.042,0.01,0.132,0.175,0.0012))
 p.adjust(vals, "bonferroni")
 p.adjust(vals, "fdr")
+
+# mice example fisher
+mice <- data.frame(southern = c(5,9), grass = c(1,15))
+fisher.test(mice, alternative = "greater")
+
