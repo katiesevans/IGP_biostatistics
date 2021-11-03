@@ -5,6 +5,12 @@ This repository contains all the course materials for IGP-484 (2021). You can fi
 # Syllabus
 [Link to the syllabus](https://katiesevans9.notion.site/Quantitative-Biology-Statistics-and-Data-Analysis-for-Life-Scientists-IGP-484-b45c148f9aa94b1783abf668ae401478)
 
+## Possible data sources for the final project:
+- [Data science datasets](https://www.dataquest.io/blog/free-datasets-for-projects/)
+- [Kaggle](https://www.kaggle.com/datasets)
+- [Tableau free public data sets](https://www.tableau.com/learn/articles/free-public-data-sets)
+- [AWS data sets](https://aws.amazon.com/marketplace/search/results?category=ec21bae5-404b-4bac-825c-f7b0a2c713c4&FULFILLMENT_OPTION_TYPE=DATA_EXCHANGE&filters=FULFILLMENT_OPTION_TYPE)
+
 ## Not familiar with R? Follow these steps
 
 1. Download R [here](https://www.r-project.org/)
