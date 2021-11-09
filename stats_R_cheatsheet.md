@@ -83,6 +83,13 @@ qqline(data)
 - `phyper(q, m, n, k)` - calculate the cumulative probability (p-value) of a given value (inverse of `qhyper()`)
 - `qhyper(p, m, n, k)` - calculate the value/quantile of a given probability (p-value) (inverse of `phyper()`) (not often used)
 
+### Chi-square distribution
+> `*chisq`
+- `rchisq(n, df)` - generate random variable (not often used)
+- `dchisq(x, df)` - calculate the probability of seeing a specific value
+- `pchisq(q, df)` - calculate the cumulative probability (p-value) of a given value (inverse of `qchisq()`)
+- `qchisq(p, df)` - calculate the value/quantile of a given probability (p-value) (inverse of `pchisq()`) (not often used)
+
 ## Hypothesis testing
 > Parametric
 - `t.test(x, mu)` - One sample *t*-test
@@ -94,6 +101,7 @@ qqline(data)
 - `wilcox.test(x, y)` - Two (independent) sample Mann-Whitney (or Wilcoxon Rank Sum) test
 - `wilcox.test(x, y, paired = T)` - Paired (dependent) sample test (*aka Wilcoxon signed-rank*)
 - `fisher.test(x, alternative = "greater")` - Fisher's exact test. Use `alternative = greater` to test one-sided for enrichment. Can also use a non-directional alternative. `x` is a 2x2 contingency table
+- `chisq.test(x, correct = F)` - Chi-Square test for contingency tables and goodness-of-fit tests on count data. Default is `correct = T` which applies a continuity correction. To get the same answers as in doing it by hand, you need to use `correct = F`
 
 **Note: most hypothesis tests have the optional argument `alternative = c("two.sided", "less", "greater")` for one-sided or two-sided tests**
 
