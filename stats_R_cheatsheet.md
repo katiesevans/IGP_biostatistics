@@ -102,6 +102,7 @@ qqline(data)
 - `wilcox.test(x, y, paired = T)` - Paired (dependent) sample test (*aka Wilcoxon signed-rank*)
 - `fisher.test(x, alternative = "greater")` - Fisher's exact test. Use `alternative = greater` to test one-sided for enrichment. Can also use a non-directional alternative. `x` is a 2x2 contingency table
 - `chisq.test(x, correct = F)` - Chi-Square test for contingency tables and goodness-of-fit tests on count data. Default is `correct = T` which applies a continuity correction. To get the same answers as in doing it by hand, you need to use `correct = F`
+- `mcnemar.test(x, correct = F)` - Chi-square test for paired data (didn't really talk about in class, just a note in case it is useful in your research)
 
 **Note: most hypothesis tests have the optional argument `alternative = c("two.sided", "less", "greater")` for one-sided or two-sided tests**
 
@@ -113,6 +114,9 @@ qqline(data)
 - `shapiro.test(x)` - test of non-normality. (*P > 0.1 = normal distribution*)
 - `power.t.test(n, delta, sd, sig.level, power)` - perform power test (*provide 4/5 parameters and get the 5th*)
 - `p.adjust(p, method)` - adjust p-values for multiple testing. Several differnt methods available including `fdr` and `bonferroni`
+- `cor(x, y, method = c("pearson", "spearman", "kendall"))` - calculate correlation between two variables. Defaults to pearson (parametric) but can choose spearman or kendall as non-parametric options
+- `cor.test(x, y, method = c("pearson", "spearman", "kendall"))` - test if the linear corrleation between two variables is different from zero. Defaults to pearson (parametric) but can choose spearman or kendall as non-parametric options
+- `cov(x, y)` - calculates covariance between two variables
 
 ## Outside links:
 * [Statistical Analysis with R For Dummies Cheat Sheet](https://www.dummies.com/programming/r/statistical-analysis-with-r-for-dummies-cheat-sheet/)
