@@ -34,6 +34,7 @@ For all questions, contact Katie at kathryn.evans@northwestern.edu (or on the bi
 ## General R links for more help
 * swirl ([here](https://swirlstats.com/))
 * Data types and structures ([here](https://swcarpentry.github.io/r-novice-inflammation/13-supp-data-structures/))
+* Base R vs. Tidyverse functions ([here](https://tavareshugo.github.io/data_carpentry_extras/base-r_tidyverse_equivalents/base-r_tidyverse_equivalents.html))
 
 ## More Stats help
 * Great YouTube channel - has videos for probably every topic (and more!): [here](https://www.youtube.com/channel/UCtYLUTtgS3k1Fg4y5tAhLbw)

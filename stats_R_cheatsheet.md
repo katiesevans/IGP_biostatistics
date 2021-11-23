@@ -90,11 +90,21 @@ qqline(data)
 - `pchisq(q, df)` - calculate the cumulative probability (p-value) of a given value (inverse of `qchisq()`)
 - `qchisq(p, df)` - calculate the value/quantile of a given probability (p-value) (inverse of `pchisq()`) (not often used)
 
+### F distribution
+> `*f`
+- `rf(n, df1, df2)` - generate random variable (not often used)
+- `df(x, df1, df2)` - calculate the probability of seeing a specific value (not often used)
+- `pf(q, df1, df2)` - calculate the cumulative probability (p-value) of a given value (inverse of `qf()`)
+- `qf(p, df1, df2)` - calculate the value/quantile of a given probability (p-value) (inverse of `pf()`)
+
 ## Hypothesis testing
 > Parametric
 - `t.test(x, mu)` - One sample *t*-test
 - `t.test(x, y)` - Two (independent) sample *t*-test
 - `t.test(x, y, paired = T)` - Paired (dependent) sample *t*-test
+- `lm(y ~ x)` - linear model of y given x
+- `anova(lm(y ~ x))` - analysis of variance of y given x where x is categorical with several values
+- `TukeyHSD(model)` - Pairwise t-tests with adjusted p-values for multiple testing. Requires `aov()` as input.
 
 > Non-parametric
 - `wilcox.test(x)` - One sample Mann-Whitney (or Wilcoxon Rank Sum) test
@@ -103,6 +113,7 @@ qqline(data)
 - `fisher.test(x, alternative = "greater")` - Fisher's exact test. Use `alternative = greater` to test one-sided for enrichment. Can also use a non-directional alternative. `x` is a 2x2 contingency table
 - `chisq.test(x, correct = F)` - Chi-Square test for contingency tables and goodness-of-fit tests on count data. Default is `correct = T` which applies a continuity correction. To get the same answers as in doing it by hand, you need to use `correct = F`
 - `mcnemar.test(x, correct = F)` - Chi-square test for paired data (didn't really talk about in class, just a note in case it is useful in your research)
+- `kruskal.test(y ~ x)` - Non-parametric alternative for `anova`. Uses rank-sum method.
 
 **Note: most hypothesis tests have the optional argument `alternative = c("two.sided", "less", "greater")` for one-sided or two-sided tests**
 
@@ -111,12 +122,24 @@ qqline(data)
 ![](data/flowchart.png)
 
 ## Misc.
+- `quantile(x, probs)` - calculate the quantile of a sequence or distribution at a given probability (`probs)`) (*Note: `quantile(rnorm(100), probs = 0.95)` returns the 95% percentile of the random distribution).
 - `shapiro.test(x)` - test of non-normality. (*P > 0.1 = normal distribution*)
 - `power.t.test(n, delta, sd, sig.level, power)` - perform power test (*provide 4/5 parameters and get the 5th*)
 - `p.adjust(p, method)` - adjust p-values for multiple testing. Several differnt methods available including `fdr` and `bonferroni`
 - `cor(x, y, method = c("pearson", "spearman", "kendall"))` - calculate correlation between two variables. Defaults to pearson (parametric) but can choose spearman or kendall as non-parametric options
 - `cor.test(x, y, method = c("pearson", "spearman", "kendall"))` - test if the linear corrleation between two variables is different from zero. Defaults to pearson (parametric) but can choose spearman or kendall as non-parametric options
 - `cov(x, y)` - calculates covariance between two variables
+- `summary(model)` - returns summary statistics for a model (i.e. linear model `lm()`)
+
+# Plotting
+* [ggplot2 cheatsheet](https://www.maths.usyd.edu.au/u/UG/SM/STAT3022/r/current/Misc/data-visualization-2.1.pdf)
+* [Base R plotting cheatsheet](http://publish.illinois.edu/johnrgallagher/files/2015/10/BaseGraphicsCheatsheet.pdf)
+* `qqnorm(data)` - Q-Q plot. Can also add `qqline(data)` to add the line to test for normality
+* `plot(model, 0)` - plot a linear model
+* `plot(model, 1)` - plot residuals from a model
+* `ggplot2::qplot(x, y)` - easy ggplot plots
+* `interaction.plot(y, x1, x2)` - plot interaction between two variables (x1 and x2) for two-way anova
+
 
 ## Outside links:
 * [Statistical Analysis with R For Dummies Cheat Sheet](https://www.dummies.com/programming/r/statistical-analysis-with-r-for-dummies-cheat-sheet/)
