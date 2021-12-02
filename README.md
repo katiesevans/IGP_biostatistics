@@ -5,6 +5,9 @@ This repository contains all the course materials for IGP-484 (2021). You can fi
 # Syllabus
 [Link to the syllabus](https://katiesevans9.notion.site/Quantitative-Biology-Statistics-and-Data-Analysis-for-Life-Scientists-IGP-484-b45c148f9aa94b1783abf668ae401478)
 
+## Study guide for Final Exam:
+[here](final_study_guide.md)
+
 ## Possible data sources for the final project:
 - [Data science datasets](https://www.dataquest.io/blog/free-datasets-for-projects/)
 - [Kaggle](https://www.kaggle.com/datasets)
